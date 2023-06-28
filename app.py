@@ -360,7 +360,8 @@ def set_text_style(text, background_color, text_color):
 
 
 def show_scrape_results(title):
-    search_tpb(title)
+    # search_tpb(title)
+    search_1337x(title)
     filter_cached()
     st.session_state['df_cached'] = df_cached
     dict = st.session_state['df_selected_tmdb_result']
