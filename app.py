@@ -612,6 +612,9 @@ buttons_for_scrape_results = []
 
 st.set_page_config(page_title="My Webpage", layout="wide")
 
+if 'black_image' not in st.session_state:
+    st.session_state['black_image'] = Image.new("RGB", (width, height), color="black")
+
 if 'click_' not in st.session_state:
     st.session_state['click_'] = False
 
@@ -662,7 +665,7 @@ if st.session_state['submit_clicked']:
             image_column, text_column  = st.columns((1,5))
 
             with image_column:
-                st.image(black_image)
+                st.image(st.session_state['black_image'])
 
 
             with text_column:
