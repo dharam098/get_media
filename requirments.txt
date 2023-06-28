@@ -1,5 +1,3 @@
-1337x==1.2.4
-pyratebay==0.2.3
 libtorrent==2.0.9
 pandas==1.3.0
 requests==2.26.0
