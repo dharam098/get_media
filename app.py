@@ -452,7 +452,7 @@ def get_debrid_link(i):
     try:
         magnet = df_cached.loc[i,'magnet']
 
-        response = requests.post(
+        response = s.post(
             'https://api.real-debrid.com/rest/1.0/torrents/addMagnet'
             ,{"magnet" : magnet}
             ,headers={"Authorization": f"Bearer {api}"}
