@@ -137,7 +137,7 @@ def size(n):
 
 def search_tpb(query):
     global df_torrents
-    torrents = tpb.search(query)
+    torrents = tpb.search(query, ['video'])
     list_search_results=[]
     for torrent in torrents:
         list_search_results.append({'name':torrent.name, 'seeders': torrent.seeders, 'leechers': torrent.leechers, 'size':torrent.size, 'time': torrent.added, 'num_files': torrent.num_files, 'infoHash': torrent.info_hash, 'magnet': torrent.magnet()})
@@ -360,8 +360,8 @@ def set_text_style(text, background_color, text_color):
 
 
 def show_scrape_results(title):
-    # search_tpb(title)
-    search_1337x(title)
+    search_tpb(title)
+    # search_1337x(title)
     filter_cached()
     st.session_state['df_cached'] = df_cached
     dict = st.session_state['df_selected_tmdb_result']
