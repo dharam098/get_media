@@ -1,5 +1,5 @@
-from pyratebay.torrent import Torrent, URL
-from pyratebay.categories import categories
+from torrent import Torrent, URL
+from categories import categories
 import requests
 
 class tpb:
