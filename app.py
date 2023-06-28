@@ -665,7 +665,8 @@ if st.session_state['submit_clicked']:
             image_column, text_column  = st.columns((1,5))
 
             with image_column:
-                st.image(st.session_state['black_image'])
+                st.image(st.session_state.get('black_image', Image.new("RGB", (width, height), color="black")))
+		    
 
 
             with text_column:
