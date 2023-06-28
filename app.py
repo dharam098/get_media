@@ -10,7 +10,7 @@ import streamlit as st
 # from py1337x import py1337x
 # import pyratebay
 # torrents = py1337x(proxy='1337x.to', cache='py1337xCache', cacheTime=500)
-import libtorrent as lt
+# import libtorrent as lt
 from requests.adapters import HTTPAdapter, Retry
 from bs4 import BeautifulSoup
 
