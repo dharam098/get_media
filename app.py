@@ -458,7 +458,7 @@ def get_debrid_link(i):
             ,headers={"Authorization": f"Bearer {api}"}
         )
         if not response.ok:
-            st.write("error adding magnet")
+            st.write("error adding magnet, response not ok")
             return None
     except:
         st.write('error adding magnet --')
