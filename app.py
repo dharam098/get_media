@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
+
 
 
 
