@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-
+import time
 
 
 # from py1337x import py1337x
@@ -696,6 +696,8 @@ if st.session_state['submit_clicked']:
                         st.image(Image.open(BytesIO(requests.get(df_tmdb_results.iloc[j].loc['poster_path']).content)))
             except:
                 pass
+	while True:
+		time.sleep(2)
 
     
     if sum(buttons):
