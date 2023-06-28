@@ -120,7 +120,7 @@ class Torrent:
 				tor = r.json()
 				self.description = tor['descr']
 			except Exception as e:
-				print('Error: ', e)
+				st.write('Error: ', e)
 
 	def magnet(self):
 		return f'magnet:?xt=urn:btih:{self.info_hash}&dn={self.name}'
@@ -154,7 +154,7 @@ class tpb:
 						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
 				torrents.append(torrent)
 		except Exception as e:
-			print('Error: ', e)
+			st.write('Error: ', e)
 			return None
 
 		return torrents
@@ -165,7 +165,7 @@ class tpb:
 		try:
 			tor = r.json()
 		except Exception as e:
-			print('Error: ', e)
+			st.write('Error: ', e)
 			return None
 
 		torrent = Torrent(str(tor['id']), tor['name'], tor['info_hash'], tor['leechers'], tor['seeders'],
@@ -182,7 +182,7 @@ class tpb:
 						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
 				torrents.append(torrent)
 		except Exception as e:
-			print('Error: ', e)
+			st.write('Error: ', e)
 			return None
 
 		return torrents
@@ -206,7 +206,7 @@ class tpb:
 						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
 				torrents.append(torrent)
 		except Exception as e:
-			print('Error: ', e)
+			st.write('Error: ', e)
 			return None
 		return torrents
 
@@ -242,7 +242,7 @@ def search_query(query):
         
         return df_result
     except:
-        print('No Result!')
+        st.write('No Result!')
         
         return pd.DataFrame()
     
@@ -309,7 +309,7 @@ def size(n):
 
 #         df = pd.DataFrame(results_dic['items'])
 #     except:
-#         print('site not accessible')
+#         st.write('site not accessible')
 #         return None
 
 
@@ -327,7 +327,7 @@ def size(n):
 #         df = df[df['infoHash'] != 'NA']
 
 #     except:
-#         print('info hash not added')
+#         st.write('info hash not added')
 #         return df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader']]
 #     df_torrents = df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader', 'infoHash', 'magnet']]
 
@@ -418,7 +418,7 @@ def get_debrid_link(i):
     global df_cloud, df_files, links
     # check link in cloud
     try:
-        print('Cloud scanning')
+        st.write('Cloud scanning')
         response = requests.get(
             'https://api.real-debrid.com/rest/1.0/torrents'
             ,headers={"Authorization": f"Bearer {api}"}
@@ -438,12 +438,12 @@ def get_debrid_link(i):
             df_files = pd.DataFrame(response.json()['files']).drop(['id', 'selected'], axis =1).rename({'path':'filename'}, axis=1)
             df_files['size']=df_files['bytes'].apply(size)
             df_files.drop(['bytes'], axis=1, inplace=True)
-            print('Found!')
+            st.write('Found!')
             return df_files
         else:
-            print('Pass')
+            st.write('Pass')
     except:
-        print('cloud checking failed')
+        st.write('cloud checking failed')
         pass
 
 
@@ -458,10 +458,10 @@ def get_debrid_link(i):
             ,headers={"Authorization": f"Bearer {api}"}
         )
         if not response.ok:
-            print("error adding magnet")
+            st.write("error adding magnet")
             return None
     except:
-        print('error adding magnet')
+        st.write('error adding magnet')
         return None
 
     #start magnet link
@@ -475,11 +475,11 @@ def get_debrid_link(i):
         )
 
         if not response.ok:
-            print("error starting magnet")
+            st.write("error starting magnet")
             return None
 
     except:
-        print('error starting magnet')
+        st.write('error starting magnet')
         return None
 
 
@@ -492,12 +492,12 @@ def get_debrid_link(i):
         )
         links = response.json()['links']
         if response.ok:
-            print('magnet added')
+            st.write('magnet added')
         else:
-            print('error getting files')
+            st.write('error getting files')
             return None
     except:
-        print('error getting files')
+        st.write('error getting files')
         return None
 
     df_files= pd.DataFrame(response.json()['files']).drop(['id', 'selected'], axis =1).rename({'path':'filename'}, axis=1)
@@ -531,7 +531,7 @@ def unrestrict(i=[-1]):
 
 
             if not response.ok:
-                print('error unrestricting')
+                st.write('error unrestricting')
                 return None
 
             response = response.json()
@@ -541,7 +541,7 @@ def unrestrict(i=[-1]):
 
 
         except:
-            print('error unrestricting')
+            st.write('error unrestricting')
             return None
     download_links = result
     return result
