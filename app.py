@@ -4,7 +4,6 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-from get_media.tpb_main import tpb
 
 
 
@@ -14,6 +13,208 @@ from get_media.tpb_main import tpb
 import libtorrent as lt
 from requests.adapters import HTTPAdapter, Retry
 from bs4 import BeautifulSoup
+
+############TPB########################
+
+categories = {
+	'audio': {
+		'code':100,
+		'subs':{
+			'music':1,
+			'audio books':2,
+			'sound clips':3,
+			'flac':4,
+			'other':99
+		}
+	},
+	'video': {
+		'code':200,
+		'subs':{
+			'movies':1,
+			'movies DVDR':2,
+			'music videos':3,
+			'movies clips':4,
+			'tv shows':5,
+			'handheld':6,
+			'hd movies':7,
+			'hd tv shows':8,
+			'3d':9,
+			'other':99
+		}
+	},
+	'applications':{
+		'code':300,
+		'subs':{
+			'windows':1,
+			'mac':2,
+			'unix':3,
+			'handheld':4,
+			'ios':5,
+			'android':6,
+			'other os':99
+		}
+	},
+	'games':{
+		'code':400,
+		'subs':{
+			'pc':1,
+			'mac':2,
+			'psx':3,
+			'xbox360':4,
+			'wii':5,
+			'handheld':6,
+			'ios':7,
+			'android':8,
+			'other':99
+		}
+	},
+	'porn':{
+		'code':500,
+		'subs':{
+			'movies':1,
+			'movies dvdr':2,
+			'pictures':3,
+			'games':4,
+			'hd movies':5,
+			'movie clips':6,
+			'other':99
+		}
+	},
+	'other':{
+		'code':600,
+		'subs':{
+			'ebooks':1,
+			'comics':2,
+			'pictures':3,
+			'covers':4,
+			'physibles':5,
+			'other':99
+		}
+	}
+}
+
+
+URL = "https://apibay.org/"
+
+class Torrent:
+
+	def __init__(self, id, name, info_hash, le, se, num_files, size, username, added, status, category):
+		self.id = id
+		self.url = 'https://thepiratebay.org/description.php?id='+id
+		self.name = name
+		self.info_hash = info_hash
+		self.leechers = int(le)
+		self.seeders = int(se)
+		self.num_files = num_files
+		self.size = size
+		self.username = username
+		self.added = added
+		self.status = status
+		self.category = category
+		self.description = None
+
+	def get_description(self):
+		if self.description == None:
+			r = requests.get(URL+'t.php', params={'id':self.id})
+			try:
+				tor = r.json()
+				self.description = tor['descr']
+			except Exception as e:
+				print('Error: ', e)
+
+	def magnet(self):
+		return f'magnet:?xt=urn:btih:{self.info_hash}&dn={self.name}'
+
+	def __str__(self):
+		return f'Name: {self.name}\nHash: {self.info_hash}\nURL: {self.url}'
+
+
+
+
+
+
+
+class tpb:
+	def search(keyword, cats=[]):
+		params = {
+			'q':keyword,
+			'cat':[]
+		}
+		for cat in cats:
+			if cat in categories:
+				params['cat'].append(str(categories[cat]['code']))
+		params['cat'] = ','.join(params['cat'])
+
+		r = requests.get(URL+'q.php', params=params)
+
+		torrents = []
+		try:
+			for tor in r.json():
+				torrent = Torrent(tor['id'], tor['name'], tor['info_hash'], tor['leechers'], tor['seeders'],
+						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
+				torrents.append(torrent)
+		except Exception as e:
+			print('Error: ', e)
+			return None
+
+		return torrents
+
+	def get_torrent(torrent_id):
+		r = requests.get(URL+'t.php', params={'id':torrent_id})
+
+		try:
+			tor = r.json()
+		except Exception as e:
+			print('Error: ', e)
+			return None
+
+		torrent = Torrent(str(tor['id']), tor['name'], tor['info_hash'], tor['leechers'], tor['seeders'],
+				tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
+		torrent.description = tor['descr']
+		return torrent
+
+	def recent():
+		r = requests.get(URL+'precompiled/data_top100_recent.json')
+		torrents = []
+		try:
+			for tor in r.json():
+				torrent = Torrent(tor['id'], tor['name'], tor['info_hash'], tor['leechers'], tor['seeders'],
+						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
+				torrents.append(torrent)
+		except Exception as e:
+			print('Error: ', e)
+			return None
+
+		return torrents
+
+	def top100(category=None, subc=None):
+		if category is None:
+			r = requests.get('https://apibay.org/precompiled/data_top100_all.json')
+		else:
+			if category not in categories:
+				raise Exception(f"{category} is not a valid category!")
+			cat_n = categories[category]['code']
+			if subc is not None and subc not in categories[category]['subs']:
+				raise Exception(f"{subc} is not a valid sub-category!")
+			elif subc is not None:
+				cat_n += categories[category]['subs'][subc]
+			r = requests.get(URL+f'precompiled/data_top100_{cat_n}.json')
+		torrents = []
+		try:
+			for tor in r.json():
+				torrent = Torrent(str(tor['id']), tor['name'], tor['info_hash'], tor['leechers'], tor['seeders'],
+						tor['num_files'], tor['size'], tor['username'], tor['added'], tor['status'], tor['category'])
+				torrents.append(torrent)
+		except Exception as e:
+			print('Error: ', e)
+			return None
+		return torrents
+
+
+
+
+
+#############TPB####################
 
 
 #------FROM TMDB -------------
