@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-from tpb_main import tpb
+from .tpb_main import tpb
 
 
 
