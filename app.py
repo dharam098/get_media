@@ -461,7 +461,7 @@ def get_debrid_link(i):
             st.write("error adding magnet")
             return None
     except:
-        st.write('error adding magnet')
+        st.write('error adding magnet --')
         return None
 
     #start magnet link
