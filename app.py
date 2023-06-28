@@ -4,13 +4,13 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-from get_media.tpb_main import tpb
+from tpb_main import tpb
 
 
 
-from py1337x import py1337x
+# from py1337x import py1337x
 # import pyratebay
-torrents = py1337x(proxy='1337x.to', cache='py1337xCache', cacheTime=500)
+# torrents = py1337x(proxy='1337x.to', cache='py1337xCache', cacheTime=500)
 import libtorrent as lt
 from requests.adapters import HTTPAdapter, Retry
 from bs4 import BeautifulSoup
@@ -97,40 +97,40 @@ def size(n):
 
 #https://technoxyz.com/tamilrockers-proxy/
 #https://www.1tamilmv.cafe/
-def search_1337x(query, type_ ='All'):
-    global df_torrents
-    # get torrent list by search
-    try:
-        if(type_=='All'):
-            results_dic = torrents.search(query)
-        else:
-            results_dic = torrents.search(query, category=type_)
+# def search_1337x(query, type_ ='All'):
+#     global df_torrents
+#     # get torrent list by search
+#     try:
+#         if(type_=='All'):
+#             results_dic = torrents.search(query)
+#         else:
+#             results_dic = torrents.search(query, category=type_)
 
-        df = pd.DataFrame(results_dic['items'])
-    except:
-        print('site not accessible')
-        return None
+#         df = pd.DataFrame(results_dic['items'])
+#     except:
+#         print('site not accessible')
+#         return None
 
 
-    # add info hash columns
-    try:
-        df['infoHash'] = 'NA'
-        df['magnet'] = 'NA'
-        for row in df.itertuples():
-            try:
-                torrent_info = torrents.info(link=row.link)
-                df['infoHash'].iloc[row.Index] = torrent_info['infoHash']
-                df['magnet'].iloc[row.Index] = torrent_info['magnetLink']
-            except:
-                pass
-        df = df[df['infoHash'] != 'NA']
+#     # add info hash columns
+#     try:
+#         df['infoHash'] = 'NA'
+#         df['magnet'] = 'NA'
+#         for row in df.itertuples():
+#             try:
+#                 torrent_info = torrents.info(link=row.link)
+#                 df['infoHash'].iloc[row.Index] = torrent_info['infoHash']
+#                 df['magnet'].iloc[row.Index] = torrent_info['magnetLink']
+#             except:
+#                 pass
+#         df = df[df['infoHash'] != 'NA']
 
-    except:
-        print('info hash not added')
-        return df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader']]
-    df_torrents = df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader', 'infoHash', 'magnet']]
+#     except:
+#         print('info hash not added')
+#         return df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader']]
+#     df_torrents = df[['name', 'seeders', 'leechers', 'size', 'time', 'uploader', 'infoHash', 'magnet']]
 
-    return df_torrents[['name', 'seeders', 'leechers', 'size', 'time', 'uploader']]
+#     return df_torrents[['name', 'seeders', 'leechers', 'size', 'time', 'uploader']]
 
 
 
