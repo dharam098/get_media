@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import streamlit as st
-
+from get_media.tpb_main import tpb
 
 
 
@@ -137,7 +137,7 @@ def search_1337x(query, type_ ='All'):
 
 def search_tpb(query):
     global df_torrents
-    torrents = pyratebay.search(query)
+    torrents = tpb.search(query)
     list_search_results=[]
     for torrent in torrents:
         list_search_results.append({'name':torrent.name, 'seeders': torrent.seeders, 'leechers': torrent.leechers, 'size':torrent.size, 'time': torrent.added, 'num_files': torrent.num_files, 'infoHash': torrent.info_hash, 'magnet': torrent.magnet()})
