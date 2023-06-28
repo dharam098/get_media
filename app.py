@@ -696,9 +696,14 @@ if st.session_state['submit_clicked']:
                         st.image(Image.open(BytesIO(requests.get(df_tmdb_results.iloc[j].loc['poster_path']).content)))
             except:
                 pass
-	while True:
-		time.sleep(2)
+        while True:
+			time.sleep(1)
 
+			
+					
+		
+		
+	
     
     if sum(buttons):
         st.session_state['click_'] = True
