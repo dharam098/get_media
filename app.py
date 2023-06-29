@@ -451,6 +451,7 @@ def get_debrid_link(i):
     #add magnet to debrid
     try:
         magnet = df_cached.loc[i,'magnet']
+	    st.write(magnet)
 
         response = s.post(
             'https://api.real-debrid.com/rest/1.0/torrents/addMagnet'
