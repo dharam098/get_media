@@ -582,6 +582,11 @@ def show_scrape_results(title):
         date, button = st.columns((1,7))
         with date:
             st.write(dict['release_date'])
+
+    if  st.button('Home'):
+        st.experimental_rerun()
+
+
     
 
 
