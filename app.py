@@ -596,8 +596,10 @@ def show_scrape_results(title):
         title_ = f"{df_cached.iloc[i].loc['name']} [{df_cached.iloc[i].loc['size']}]"
         st.session_state[f'container{i}'] = st.expander(title_, expanded=st.session_state[f'container{i}_is_expanded'])
         with st.session_state[f'container{i}']:
-            button_container = st.button("link", key = f"container{i}button_")
-            if button_container:   
+            if f"container{i}button" not in st.session_state:
+                st.session_state[f"container{i}button"] = False
+            st.session_state[f"container{i}button"] = st.button("link", key = f"container{i}button_")
+            if st.session_state[f"container{i}button_"]:   
                 get_debrid_link(i)
                 debrid_result = unrestrict()
                 for file in debrid_result:
@@ -657,6 +659,7 @@ if button_clicked:
     st.session_state['submit_clicked'] = True
 
 if st.session_state['submit_clicked']:
+    st.experimental_rerun()
     st.session_state['click_'] = False
     
     df_tmdb_results = search_query(query)
