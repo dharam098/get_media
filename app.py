@@ -710,7 +710,8 @@ if st.session_state['submit_clicked']:
     if sum(buttons):
         st.session_state['click_'] = True
         i = [index for index, value in enumerate(buttons) if value][0]
-        st.session_state['title'] = df_tmdb_results.iloc[i].loc['title']
+        # st.session_state['title'] = df_tmdb_results.iloc[i].loc['title']
+	    st.session_state['title'] = df_tmdb_results.iloc[i].loc['title']+ ' ' + str(pd.to_datetime(df_tmdb_results.iloc[i].loc['release_date']).year)
         st.session_state['df_selected_tmdb_result'] = df_tmdb_results.iloc[i].to_dict()
         st.session_state['submit_clicked'] = False
         st.experimental_rerun()
