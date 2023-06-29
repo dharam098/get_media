@@ -585,7 +585,9 @@ def show_scrape_results(title):
 
     for i in range(0, number_of_results):
         # st.write('---') 
-        name, size, time, number_of_files, click = st.columns((8,1,2,1,1))
+        click, name, size, time, number_of_files = st.columns((1,8,1,2,1))
+        with click:
+            buttons_for_scrape_results.append(st.button('[]', key = f"s{i}"))
         with name:
             # write_with_larger_font(df_cached.iloc[i].loc['name'], 20)
             write_with_color(df_cached.iloc[i].loc['name'], 'LavenderBlush')
@@ -595,8 +597,7 @@ def show_scrape_results(title):
             st.write(str(df_cached.iloc[i].loc['time']))
         with number_of_files:
             st.write(str(df_cached.iloc[i].loc['number_of_files']))
-        with click:
-            buttons_for_scrape_results.append(st.button('*', key = f"s{i}"))
+
     
 
 ##############################################################    
