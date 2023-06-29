@@ -5,6 +5,7 @@ from io import BytesIO
 import requests
 import streamlit as st
 import time
+import re
 
 
 # from py1337x import py1337x
@@ -245,6 +246,15 @@ def search_query(query):
         st.write('No Result!')
         
         return pd.DataFrame()
+
+
+
+def remove_symbols(string):
+    # Use regex pattern to remove symbols
+    pattern = r'[^a-zA-Z\s]'
+    cleaned_string = re.sub(pattern, '', string)
+    return cleaned_string
+
     
 
 
@@ -728,7 +738,7 @@ if st.session_state['submit_clicked']:
         st.session_state['click_'] = True
         i = [index for index, value in enumerate(buttons) if value][0]
         # st.session_state['title'] = df_tmdb_results.iloc[i].loc['title']
-        st.session_state['title'] = df_tmdb_results.iloc[i].loc['title']+ ' ' + str(pd.to_datetime(df_tmdb_results.iloc[i].loc['release_date']).year)
+        st.session_state['title'] = remove_symbols(df_tmdb_results.iloc[i].loc['title'])+ ' ' + str(pd.to_datetime(df_tmdb_results.iloc[i].loc['release_date']).year)
         st.session_state['df_selected_tmdb_result'] = df_tmdb_results.iloc[i].to_dict()
         st.session_state['submit_clicked'] = False
         st.experimental_rerun()
