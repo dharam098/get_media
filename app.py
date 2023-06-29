@@ -659,7 +659,6 @@ if button_clicked:
     st.session_state['submit_clicked'] = True
 
 if st.session_state['submit_clicked']:
-    st.experimental_rerun()
     st.session_state['click_'] = False
     
     df_tmdb_results = search_query(query)
