@@ -594,7 +594,7 @@ def show_scrape_results(title):
             st.session_state[f'container{i}_is_expanded'] = False
 
         title_ = df_cached.iloc[i].loc['name'] + "       SIZE:-- " + df_cached.iloc[i].loc['size']
-        st.session_state[f'container{i}'] = st.expander(, expanded=st.session_state[f'container{i}_is_expanded'])
+        st.session_state[f'container{i}'] = st.expander(title_, expanded=st.session_state[f'container{i}_is_expanded'])
         with st.session_state[f'container{i}']:
             button_container = st.button("link", key = f"container{i}button_")
             if button_container:   
