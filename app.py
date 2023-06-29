@@ -396,21 +396,23 @@ def search_anime_tosho(title):
 
 
 def filter_cached():
-        global df_cached
-        df = df_torrents.copy()
-        #check cached
-        hash_list = '/'.join(df.loc[:,'infoHash'].to_list())
-        url = f"https://api.real-debrid.com/rest/1.0/torrents/instantAvailability/{hash_list}"
-        response = requests.get(
-            url
-            ,headers={"Authorization": f"Bearer {api}"}
-        )
-        df['cache_info'] = df.apply(lambda row: file_list(response.json()[row.infoHash.lower()]), axis = 1)
-        df['number_of_files'] = df.apply(lambda row: len(row.cache_info), axis = 1)
-        df=df[df['number_of_files']>0].reset_index(drop=True)
-        df_cached=df
+    global df_cached
+    df = df_torrents.copy()
+    #check cached
+    hash_list = '/'.join(df.loc[:,'infoHash'].to_list())
+    url = f"https://api.real-debrid.com/rest/1.0/torrents/instantAvailability/{hash_list}"
+    response = requests.get(
+        url
+        ,headers={"Authorization": f"Bearer {api}"}
+    )
+    df['cache_info'] = df.apply(lambda row: file_list(response.json()[row.infoHash.lower()]), axis = 1)
+    df['number_of_files'] = df.apply(lambda row: len(row.cache_info), axis = 1)
+    df=df[df['number_of_files']>0].reset_index(drop=True)
+    df_cached=df
+    st.session_state['df_cached'] = df
 
-        return df_cached[['name', 'size', 'time', 'number_of_files']]
+
+    return df_cached[['name', 'size', 'time', 'number_of_files']]
 
 
 
