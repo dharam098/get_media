@@ -570,6 +570,9 @@ def show_scrape_results(title):
     # st.session_state['df_cached'] = df_cached
     dict = st.session_state['df_selected_tmdb_result']
     number_of_results = len(df_cached)
+    if  st.button('Home'):
+        st.experimental_rerun()
+        
     st.write('---')
     image_column, text_column  = st.columns((1,5))
 
@@ -583,8 +586,7 @@ def show_scrape_results(title):
         with date:
             st.write(dict['release_date'])
 
-    if  st.button('Home'):
-        st.experimental_rerun()
+
 
 
     
