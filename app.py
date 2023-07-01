@@ -559,6 +559,21 @@ def unrestrict(i=[-1]):
     return result
 
 
+def download_link(content, filename):
+    href = f'<a href="data:application/octet-stream;base64,{base64.b64encode(content).decode()}" download="{filename}">download streamable</a>'
+    return href
+
+def vlc_playlist(title):
+    s = '#EXTM3U\n'
+    df = pd.DataFrame(download_links).sort_values(by=0).reset_index(drop=True)
+    for index, row in df.iterrows():
+        s=s+'#EXTINF:-1,'+ row[0]+'\n'+row[1]+'\n'
+	s = s.encode()
+    # Display the download link
+    return s
+    
+
+
 
 def write_with_color(text, color):
     st.markdown(f"<p style='color:{color}'>{text}</p>", unsafe_allow_html=True)
@@ -618,11 +633,15 @@ def show_scrape_results(title):
             if st.session_state[f"container{i}button_"]:   
                 get_debrid_link(i)
                 debrid_result = unrestrict()
-                for file in debrid_result:
-                    name1 = file[0]
-                    link = file[1]
-                    link = f"[{name1}]({link})"
-                    st.markdown(link, unsafe_allow_html=True)
+                link, streamable  = st.columns((3,2))
+                with link:
+                    for file in debrid_result:
+                        name1 = file[0]
+                        link = file[1]
+                        link = f"[{name1}]({link})"
+                        st.markdown(link, unsafe_allow_html=True)
+                with streamable:
+                    st.markdown(download_link(vlc_playlist(title), f'{title}.m3u'), unsafe_allow_html=True)
             # st.session_state[f'container{i}_is_expanded'] = False
 
     
