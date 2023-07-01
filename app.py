@@ -6,6 +6,7 @@ import requests
 import streamlit as st
 import time
 import re
+import base64
 
 
 # from py1337x import py1337x
