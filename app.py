@@ -569,7 +569,7 @@ def vlc_playlist(title):
     df = pd.DataFrame(download_links).sort_values(by=0).reset_index(drop=True)
     for index, row in df.iterrows():
         s=s+'#EXTINF:-1,'+ row[0]+'\n'+row[1]+'\n'
-	s = s.encode()
+    s = s.encode()
     # Display the download link
     return s
     
